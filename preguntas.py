@@ -1,5 +1,5 @@
 """
-Laboratorio - Manipulación de Datos usando Pandas
+Laboratorio - ManipulaciÃ³n de Datos usando Pandas
 -----------------------------------------------------------------------------------------
 
 Este archivo contiene las preguntas que se van a realizar en el laboratorio.
@@ -22,7 +22,7 @@ def pregunta_01():
     40
 
     """
-    return
+    return len(tbl0)
 
 
 def pregunta_02():
@@ -33,7 +33,7 @@ def pregunta_02():
     4
 
     """
-    return
+    return len(tbl0.columns)
 
 
 def pregunta_03():
@@ -50,7 +50,8 @@ def pregunta_03():
     Name: _c1, dtype: int64
 
     """
-    return
+    return tbl0['_c1'].value_counts().sort_index()
+
 
 
 def pregunta_04():
@@ -65,7 +66,7 @@ def pregunta_04():
     E    4.785714
     Name: _c2, dtype: float64
     """
-    return
+    return tbl0.groupby('_c1')['_c2'].mean()
 
 
 def pregunta_05():
@@ -82,19 +83,19 @@ def pregunta_05():
     E    9
     Name: _c2, dtype: int64
     """
-    return
+    return tbl0.groupby('_c1')['_c2'].max()
 
 
 def pregunta_06():
     """
-    Retorne una lista con los valores unicos de la columna _c4 de del archivo `tbl1.csv`
-    en mayusculas y ordenados alfabéticamente.
+    Retorne una lista con los valores únicos de la columna _c4 de del archivo `tbl1.csv`
+    en mayúsculas y ordenados alfabéticamente.
 
     Rta/
     ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
     """
-    return
+    return sorted(tbl1['_c4'].str.upper().unique().tolist())
 
 
 def pregunta_07():
@@ -110,7 +111,7 @@ def pregunta_07():
     E    67
     Name: _c2, dtype: int64
     """
-    return
+    return tbl0.groupby('_c1')['_c2'].sum()
 
 
 def pregunta_08():
@@ -128,12 +129,13 @@ def pregunta_08():
     39   39   E    5  1998-01-26    44
 
     """
-    return
+    tbl0["suma"] = tbl0["_c0"]+tbl0["_c2"]
+    return tbl0
 
 
 def pregunta_09():
     """
-    Agregue el año como una columna al archivo `tbl0.tsv`.
+    Agregue el aÃ±o como una columna al archivo `tbl0.tsv`.
 
     Rta/
         _c0 _c1  _c2         _c3  year
@@ -146,7 +148,9 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
-    return
+    tbl0["_c3"] = pd.to_datetime(tbl0["_c3"], errors='coerce')
+    tbl0["año"] = tbl0["_c3"].dt.year
+    return tbl0
 
 
 def pregunta_10():
