@@ -148,9 +148,13 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
-    tbl0["_c3"] = pd.to_datetime(tbl0["_c3"], errors='coerce')
-    tbl0["año"] = tbl0["_c3"].dt.year
-    return tbl0
+    c3 = tbl0['_c3'].tolist()
+    
+    
+    años = list(map(lambda x: x.split('-')[0], c3))
+    df = tbl0.copy()
+    df['year'] = años
+    return df
 
 
 def pregunta_10():
@@ -168,18 +172,21 @@ def pregunta_10():
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
     
-    grouped = tbl0.groupby("_c1")["_c2"].apply(lambda x: ":".join(x.astype(str))).reset_index()
-    
-    lista_valores = grouped['_c2'].str.split(':')
+    values=tbl0[['_c1', '_c2']].groupby(['_c1'])['_c2'].apply(list).tolist()
+    c2=[]
+    for letter in values:
+        text=''
+        for value in sorted(letter):
+            text+=f'{value}:'      
+        c2.append(text[:-1])
 
-    lista_valores = lista_valores.map(lambda x: list(map(int, x)))
-
-    lista_valores = lista_valores.map(lambda x: sorted(x))
-
-    columna_ordenada = lista_valores.map(lambda x: ':'.join(map(str, x)))
-
-    grouped["_c2"]=columna_ordenada
-    grouped.rename(columns={"_c1": "_c0", "_c2": "_c1"}, inplace=True)
+        
+        
+    return pd.DataFrame({
+        
+        '_c2': c2
+        
+    }, index = pd.Series(['A', 'B', 'C', 'D', 'E'], name='_c1'))
     
 
     return grouped
